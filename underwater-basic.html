@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Underwater Restoration VR</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <style>
+      body { 
+        margin: 0; 
+      }
+      #hud { 
+        position: fixed; 
+        top: 10px; 
+        left: 10px; 
+        color: white; 
+        font-family: Arial; 
+        z-index: 999; 
+        background: rgba(0, 0, 0, 0.3); 
+        padding: 10px; border-radius: 5px; 
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="hud">Level: <span id ="levelText">1</span> |  🗑️ Trash cleaned: <span id="score">0</span></div>
+
+    <a-scene> 
+      <a-assets>
+        <img id="oceanSky" src="bg.jpeg">
+        <a-asset-item id="fishModel" src="fish.glb"></a-asset-item>
+        <a-asset-item id="coralModel" src="coral.glb"></a-asset-item>
+        <a-asset-item id="trashModel" src="oil3.glb"></a-asset-item>
+        <a-asset-item id="trashModel2" src="plastic.glb"></a-asset-item>
+        <a-asset-item id="turtleModel" src="turtle.glb"></a-asset-item>
+      </a-assets>
+
+      <a-sky src="#oceanSky"></a-sky>
+      
+      <a-entity id="trash-group"></a-entity>
+      <a-entity id="fish-group"></a-entity>
+      <a-entity id="coral-group"></a-entity>
+      <a-entity id="turtle-group"></a-entity>
+      <a-entity position="0 1.6 0">
+        <a-camera><a-cursor raycaster="objects: .trash"></a-cursor></a-camera>
+      </a-entity>
+
+      <a-entity light="type: ambient; intensity: 0.8"></a-entity>
+      <a-plane rotation="-90 0 0" width="60" height="60" color="#4477aa" opacity="0.5"></a-plane>
+    </a-scene>
+
+    <script>
+      let winscore = 6;
+      let score = 0; 
+      let level = 1;
+      const coralBaseSize = 100;
+      const coralGroup = document.querySelector("#coral-group");
+      const fishGroup = document.querySelector("#fish-group");
+      const trashGroup = document.querySelector("#trash-group");
+      const turtleGroup = document.querySelector("#turtle-group");
+      const scoreText = document.querySelector("#score");
+      const levelText = document.querySelector("#levelText");
+      const scene = document.querySelector("a-scene");
+
+      // Spawn trash
+      function spawnTrash(x, y, z) {
+        const trash = document.createElement("a-gltf-model"); //"im creating a 3d model" declare
+        trash.setAttribute("src", "#trashModel"); // calling 3d model asset
+        trash.setAttribute("position", `${x} ${y} ${z}`); // setting random position within plane
+        trash.setAttribute("scale", "0.5 0.5 0.5"); //size
+        trash.setAttribute("class", "trash"); //set name for style
+        // Floating anim (updown)
+        trash.setAttribute("animation", `property: position; to: ${x} ${y + 0.3} ${z}; dur: 3000; dir: alternate; loop: true; easing: easeInOutSine`);
+        
+        trash.addEventListener("click", () => {
+          trash.remove();
+          score++;
+          scoreText.textContent = score;
+          checkProgress();
+
+          if (trashGroup.children.length==0){startnextlevel();}
+        });
+        trashGroup.appendChild(trash); //add this individual trash to the trash group
+      }
+
+      // INITIALIZE STATIC CENTER CORAL
+      function initCoral() {
+        const coral = document.createElement("a-gltf-model");
+        coral.setAttribute("class", "coral");
+        coral.setAttribute("src", "#coralModel");
+        coral.setAttribute("position", "0 0 0");
+        coral.setAttribute("scale", `${coralBaseSize} ${coralBaseSize} ${coralBaseSize}`);
+        coralGroup.appendChild(coral);
+      }
+
+      // SPAWN NEW RANDOM CORAL
+      function spawnRandomCoral() {
+        const coral = document.createElement("a-gltf-model");
+        const rx = (Math.random() - 0.5) * 40;
+        const rz = (Math.random() - 0.5) * 40; // -.5 is for negative and positive, 
+
+        // Calculate the scale based on the current score
+        let currentScale = (score * 5) + coralBaseSize;
+        coral.setAttribute("class", "coral");
+        coral.setAttribute("src", "#coralModel");
+        coral.setAttribute("position", `${rx} 0 ${rz}`);
+        coral.setAttribute("scale", `${currentScale} ${currentScale} ${currentScale}`);        
+        coralGroup.appendChild(coral);
+        return {x: rx, z: rz};
+
+      }
+
+      // SPAWN FISH NEAR SPECIFIC POSITION
+      function spawnFishNear(x, z) {
+        const fish = document.createElement("a-gltf-model");
+        fish.setAttribute("src", "#fishModel");
+        fish.setAttribute("position", `${x} 1 ${z}`);
+        fish.setAttribute("scale", "10 10 10");
+        fish.setAttribute("animation", `property: position; to: ${x + (Math.random()*4-2)} 1 ${z + (Math.random()*4-2)}; dur: 4000; dir: alternate; loop: true`);
+        fishGroup.appendChild(fish);
+      }
+
+      function spawnturtle() {
+        const turtle = document.createElement("a-gltf-model");
+        const tx = (Math.random() - 0.5) * 40;
+        const tz = (Math.random() - 0.5) * 40;
+//        turtle.setAttribute("class", "turtle");
+        turtle.setAttribute("src", "#turtleModel");
+        turtle.setAttribute("position", `${tx} 0 ${tz}`);
+        turtle.setAttribute("scale", `0.5 0.8 0.5`);     
+        turtle.setAttribute("animation", `property: position; to: ${tx + (Math.random()*4-2)} 1 ${tz + (Math.random()*4-2)}; dur: 4000; dir: alternate; loop: true`);   
+        turtleGroup.appendChild(turtle);
+      }
+
+      // GAME PROGRESSION
+      function checkProgress() {
+        // Grow all existing corals
+        document.querySelectorAll(".coral").forEach(c => {
+          let newScale = (score * 5) + coralBaseSize;
+          c.setAttribute("scale", `${newScale} ${newScale} ${newScale}`);
+        });
+
+
+
+        // Milestones every 3 score spawn coral
+        if (score % 3 === 0 && score > 0) {
+          let pos = spawnRandomCoral();
+          for(let i=0; i<3; i++) spawnFishNear(pos.x, pos.z);
+          
+        }  //if 
+
+        if (level===2 && score%3 === 0){
+        // spawnturtle();
+         levelText.textContent = 'turtle!';
+
+         try {
+    spawnturtle();
+    console.log("Turtle spawned successfully!");
+  } catch (error) {
+    console.error("Error inside spawnturtle() function:", error);
+  }
+
+
+        }
+
+      }
+
+      function spawnTrash2(x, y, z) {
+        
+        const trash2 = document.createElement("a-gltf-model"); //"im creating a 3d model" declare
+        trash2.setAttribute("src", "#trashModel2"); // calling 3d model asset
+        trash2.setAttribute("position", `${x} ${y} ${z}`); // setting random position within plane
+        trash2.setAttribute("scale", "0.5 0.5 0.5"); //size
+        trash2.setAttribute("class", "trash"); //set name for style
+        
+        let glideX = x+(Math.random() * 20 - 10);
+        let glideZ = z+(Math.random() * 20 - 10);
+        let speed = Math.max(2500, 4000 - (level * 500)); //fast 
+        
+        trash2.setAttribute("animation", `property: position; to: ${glideX} ${y + 0.3} ${glideZ}; dur: ${speed}; dir: alternate; loop: true; easing: easeInOutSine`);
+
+        trash2.addEventListener("click", () => {
+          trash2.remove();
+          score++;
+          scoreText.textContent = score;
+          checkProgress();
+        });
+        trashGroup.appendChild(trash2); //add this individual trash to the trash group
+      }
+
+      function startnextlevel() {
+        level++;
+        levelText.textContent = level;
+
+        for (let i = 0; i <winscore; i++) {
+
+          spawnTrash2((Math.random() - 0.5) * 40, 0, (Math.random() - 0.5) * 40);
+        
+                }
+      }
+
+      scene.addEventListener("loaded", () => {
+        initCoral();
+        for (let i = 0; i < winscore; i++) {
+          spawnTrash((Math.random() - 0.5) * 40, 0, (Math.random() - 0.5) * 40);
+        }
+      });
+    </script>
+  </body>
+</html>

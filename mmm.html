@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Coral Reef Conservation</title>
+    <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    p {
+      margin-top: 15px;
+      font-size: 22px;
+    }
+
+    #MainTitle {
+      background-image: url("OJSREEFTITLEBANNER.jpg");
+      background-size: cover;
+      height: 500px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #MainTitle h1 {
+      color: rgb(100, 167, 255);  
+      font-size: 100px;
+      background-color: rgba(255, 255, 255, 0.719);
+      text-align: center;
+    }
+
+    #IntroductoryParagraph {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      width: 100%;
+      margin: 0 auto;
+      background-color: rgb(108, 213, 255);
+      padding: 25px;
+    }
+
+    .causeContainer {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      width: 50%;
+      margin: 0 auto;
+      padding: 25px;
+
+    }
+
+    .container{
+      background-color: rgb(59, 144, 255);
+      padding: 10px;
+    }
+
+    .subContainer {
+      display: flex;
+      align-items: stretch;
+      flex-direction: horizontal;
+      margin: 20px;
+      background-color: rgb(78, 255, 202);
+      border-radius: 15px;
+      box-shadow: 5px 5px rgb(0, 0, 0);
+      padding:10px;
+    }
+
+    .motherofSub {
+      display: flex;
+      align-items: stretch;
+      flex-direction: column;
+      margin: 20px;
+      background-color: rgb(78, 255, 202);
+      border-radius: 15px;
+      box-shadow: 5px 5px rgb(0, 0, 0);
+      padding:10px;
+    }
+    
+    .conText {
+      flex: 1;
+      padding: 60px;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+      color: rgb(0, 0, 0);
+    }
+
+    .conImg {
+      flex: 1;
+      display: flex;
+    }
+
+    .conImg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .causeImg {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .causeImg img {
+      width: 400px;
+      object-fit: cover;
+    }
+
+    #Bigcauses {
+      margin: 0px;
+      box-shadow: none;
+      flex-wrap: wrap;
+    }
+
+    .conservationOrg {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin: 0 auto;
+      padding: 25px;
+      background-color: rgb(78, 255, 202);
+    }
+
+    .Gamelink {
+      display: flex;
+      align-items: stretch;
+      flex-direction: column;
+      margin: 20px;
+      background-color: rgb(78, 255, 202);
+      border-radius: 15px;
+      box-shadow: 5px 5px rgb(0, 0, 0);
+      padding:10px;
+    }
+
+</style>
+</head>
+
+<body>
+
+      <div id="MainTitle">  
+          <h1>Coral Reefs</h1>
+      </div>
+
+
+      <div id="IntroductoryParagraph">
+        <h1 style="text-align: center; margin-top: 15px; ">What are coral reefs, and why should we protect them?</h1>
+        <br>
+
+        <p>Coral reefs are homes and hubs for marine life to feed, breed, shelter and live. Like rainforests, 
+          they hold a wondrously vast and diverse array of marine species ranging from turtles to sharks, octopuses to 
+          mantis shrimps, clownfish to sea urchins, up to 25% of the world's ocean species. Such colourful, lively 
+          breeding grounds are also fishing grounds for people, sustaining their lives and livelihoods. They also 
+          absorb up to 97% of wave energy, protecting coastlines vulnerable to erosion, flooding, storms etc.</p>
+      </div>
+      
+<div class='container'>
+      <div class="subContainer">
+        <div class="conText">
+          <p><strong>Coral Bleaching</strong> is one symptom that corals are dying. Triggered by many factors explained below, 
+            corals become stressed, and they expel the colourful algae living in their tissue that produce food
+            they need. Although this process doesn't outright kill them, it makes them incredibly vulnerable to 
+            starvation and leaves them weakened. If these corals and their waters are left alone, they'll die.
+          </p>
+        </div>
+        <div class="conImg" style="margin-top: 15px;">
+          <img src="CORAL BLEACHING OJS.webp">
+        </div>
+      </div>
+
+ 
+
+    <div class = "motherofSub">
+    <h1>What causes Coral Bleaching</h1>
+    <div class="subContainer" id="Bigcauses">
+      <div class="causeContainer">
+        <div class="causeImg" style="margin-top: 15px;">
+          <img src="risingtemp.jpg">
+        </div>
+        <div class="causeText">
+          <h2>Water Temperature</h2>
+          <p>As climate change worsens, a rise in water temperature endangers corals and force 
+            releases of their colourful algae that produces most of its energy.</p>
+        </div>
+      </div>
+
+      <div class="causeContainer">
+        <div class="causeImg" style="margin-top: 15px;">
+          <img src="OceanAcid.jpg">
+        </div>
+        <div class="causeText">
+          <h2>Ocean Acidification</h2>
+          <p>As more CO2 travel into the ocean, they break down into hydrogen and bond with and decreases carbonate, an essential 
+          building block for coral skeleton and shell.</p>
+        </div>
+      </div>
+
+      <div class="causeContainer">
+        <div class="causeImg" style="margin-top: 15px;">
+          <img src="ElNinoFit.webp">
+        </div>
+        <div class="causeText">
+          <h2>Severe Weather Events</h2>
+          <p>Climate patterns like El Nino can push warm waters toward coral reefs, further increasing water temperatures,
+            causing coral bleaching.</p>
+        </div>
+      </div>
+
+      <div class="causeContainer">
+        <div class="causeImg" style="margin-top: 15px;">
+          <img src="COTS2.jpg">
+        </div>
+        <div class="causeText">
+          <h2>Water Quality & Predators</h2>
+          <p>As sediment and nutrients increase in ocean water, the coral reef ecosystem goes haywire and coral predator
+            population grows (COTS), reducing coral population and diversity. Pollutants also harm coral growth and health.
+          </p>
+        </div>
+      </div>
+
+      <div class="causeContainer">
+        <div class="causeImg" style="margin-top: 15px;">
+          <img src="CoastalDevelopment&pollution2.jpeg">
+        </div>
+        <div class="causeText">
+          <h2>Coastal Development and Pollution</h2>
+          <p>Factories and other human settlements built near the coast send sediment and pollutants into the ocean that
+            alters the water quality.</p>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+  
+    <div class="motherofSub">
+      <h2>Dedicated Organisations & Information</h2>
+      <a href="https://oceana.org/">Oceana</a>
+      <a href="https://www.barrierreef.org/">Great Barrier Reef Foundation</a>
+      <a href="https://www.epa.gov/coral-reefs">The US EPA</a>
+    </div>
+
+    <div class="Gamelink">
+      <h2>Please spare some time for my little VR game!</h2>
+      <a href="underwater-basic.html">Game Link</a>
+    </div>
+</div>
+</body>
+</html>
