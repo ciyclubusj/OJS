@@ -24,7 +24,7 @@
   <body>
     <div id="hud">Level: <span id ="levelText">1</span> |  🗑️ Trash cleaned: <span id="score">0</span></div>
 
-    <a-scene> 
+    <a-scene vr-mode-ui="enabled: true"> 
       <a-assets>
         <img id="oceanSky" src="bg.jpeg">
         <a-asset-item id="fishModel" src="fish.glb"></a-asset-item>
@@ -42,11 +42,9 @@
       <a-entity id="turtle-group"></a-entity>
       
       <a-entity position="0 1.6 0">
-        <a-camera look-controls wasd-controls-enabled="false">
+        <a-camera look-controls="pointerLockEnabled: false" wasd-controls-enabled="false">     
         <a-cursor raycaster="objects: .trash"></a-cursor></a-camera>
       </a-entity>
-      
-      <a-camera look-controls wasd-controls-enabled="false">
 
       <a-entity light="type: ambient; intensity: 0.8"></a-entity>
       <a-plane rotation="-90 0 0" width="60" height="60" color="#4477aa" opacity="0.5"></a-plane>
@@ -173,7 +171,7 @@
         const trash2 = document.createElement("a-gltf-model"); //"im creating a 3d model" declare
         trash2.setAttribute("src", "#trashModel2"); // calling 3d model asset
         trash2.setAttribute("position", `${x} ${y} ${z}`); // setting random position within plane
-        trash2.setAttribute("scale", "0.5 0.5 0.5"); //size
+        trash2.setAttribute("scale", "1.0 1.0 1.0"); //size
         trash2.setAttribute("class", "trash"); //set name for style
         
         let glideX = x+(Math.random() * 20 - 10);
