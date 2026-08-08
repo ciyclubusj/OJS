@@ -174,11 +174,11 @@
         trash2.setAttribute("scale", "1.0 1.0 1.0"); //size
         trash2.setAttribute("class", "trash"); //set name for style
         
-        let glideX = x+(Math.random() * 20 - 10);
-        let glideZ = z+(Math.random() * 20 - 10);
-        let speed = Math.max(2500, 4000 - (level * 500)); //fast 
+       // let glideX = x+(Math.random() * 20 - 2);
+       // let glideZ = z+(Math.random() * 20 - 2);
+        let speed = Math.max(2500, 4000 - (level * 250)); //fast 
         
-        trash2.setAttribute("animation", `property: position; to: ${glideX} ${y + 0.3} ${glideZ}; dur: ${speed}; dir: alternate; loop: true; easing: easeInOutSine`);
+        trash2.setAttribute("animation", `property: position; to: ${x+2} ${y + 0.3} ${z}; dur: ${speed}; dir: alternate; loop: true; easing: easeInOutSine`);
 
         trash2.addEventListener("click", () => {
           trash2.remove();
@@ -195,7 +195,7 @@
 
         for (let i = 0; i <winscore; i++) {
 
-          spawnTrash2((Math.random() - 0.5) * 40, 0, (Math.random() - 0.5) * 40);
+          spawnTrash2((Math.random() - 0.5) * 20, 0, (Math.random() - 0.5) * 20);
         
                 }
       }
@@ -203,7 +203,7 @@
       scene.addEventListener("loaded", () => {
         initCoral();
         for (let i = 0; i < winscore; i++) {
-          spawnTrash((Math.random() - 0.5) * 40, 0, (Math.random() - 0.5) * 40);
+          spawnTrash((Math.random() - 0.5) * 15, 0, (Math.random() - 0.5) * 15);
         }
       });
     </script>
