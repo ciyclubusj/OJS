@@ -32,6 +32,12 @@
         <a-asset-item id="trashModel" src="oil3.glb"></a-asset-item>
         <a-asset-item id="trashModel2" src="plastic.glb"></a-asset-item>
         <a-asset-item id="turtleModel" src="turtle.glb"></a-asset-item>
+
+        <audio id="bgm" src="bgm.mp3" loop="true" preload="auto"></audio>
+        <audio id="collectSfx" src="collect.mp3" preload="auto"></audio>
+        <audio id="winSfx" src="win.mp3" preload="auto"></audio>
+
+        
       </a-assets>
 
       <a-sky src="#oceanSky"></a-sky>
@@ -60,7 +66,55 @@
       const scoreText = document.querySelector("#score");
       const levelText = document.querySelector("#levelText");
       const scene = document.querySelector("a-scene");
+      const bgm = document.querySelector("#bgm");
+      const collectSfx = document.querySelector("#collectSfx");
+      const winSfx = document.querySelector("#winSfx");
+      
+      let isMusicPlaying = false;
 
+
+      // Start background music
+      function startBGM() {
+        if (isMusicPlaying) return;
+      
+        bgm.volume = 0.4;
+        bgm.loop = true;
+      
+        bgm.play()
+          .then(() => {
+            isMusicPlaying = true;
+            console.log("BGM started");
+          })
+          .catch(() => {
+            console.log("Autoplay blocked. Waiting for user interaction.");
+          });
+      }
+      
+      // Play collect sound
+      function playCollectSound() {
+        collectSfx.currentTime = 0;
+        collectSfx.volume = 0.8;
+        collectSfx.play().catch(() => {});
+      }
+      
+      // Play level-up sound
+      function playWinSound() {
+        winSfx.currentTime = 0;
+        winSfx.volume = 1;
+        winSfx.play().catch(() => {});
+      }
+      
+      // Try autoplay when page loads
+      window.addEventListener("load", () => {
+        startBGM();
+      });
+      
+      document.addEventListener("click", startBGM);
+      document.addEventListener("keydown", startBGM);
+      document.addEventListener("touchstart", startBGM);
+
+
+      
       // Spawn trash
       function spawnTrash(x, y, z) {
         const trash = document.createElement("a-gltf-model"); //"im creating a 3d model" declare
@@ -72,6 +126,7 @@
         trash.setAttribute("animation", `property: position; to: ${x} ${y + 0.3} ${z}; dur: 3000; dir: alternate; loop: true; easing: easeInOutSine`);
         
         trash.addEventListener("click", () => {
+          playCollectSound();
           trash.remove();
           score++;
           scoreText.textContent = score;
@@ -179,23 +234,32 @@
         trash2.setAttribute("animation", `property: position; to: ${glideX} ${y + 0.3} ${glideZ}; dur: ${speed}; dir: alternate; loop: true; easing: easeInOutSine`);
 
         trash2.addEventListener("click", () => {
+          playCollectSound();
           trash2.remove();
           score++;
           scoreText.textContent = score;
           checkProgress();
+        
+          if (trashGroup.children.length==0){playWinSound();}
+          
         });
+
+        
+
+        
         trashGroup.appendChild(trash2); //add this individual trash to the trash group
       }
 
       function startnextlevel() {
         level++;
         levelText.textContent = level;
-
+         playWinSound();
         for (let i = 0; i <winscore+10; i++) {
 
           spawnTrash2((Math.random() - 0.5) * 40, 0, (Math.random() - 0.5) * 40);
         
                 }
+        
       }
 
       scene.addEventListener("loaded", () => {
